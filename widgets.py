@@ -17,6 +17,15 @@ def save_file():
         file.write(content)
         file.close()
 
+def save_as_file():
+    f = filedialog.asksaveasfile(defaultextension=".txt",filetypes=[('Text',".txt"),('All Files',".*")])
+    filetext = editor.get(1.0,END)
+    f.write(filetext)
+    f.close()
+    if f is None:
+        return
+    else:
+        config.main_window.title(f.name)
 
 
 def menu_bar(window):
@@ -25,8 +34,9 @@ def menu_bar(window):
     #File Menu
     fileMenu = Menu(menubar,tearoff=0)
     menubar.add_cascade(label="File",menu=fileMenu)
-    fileMenu.add_command(label="Open File",command=open_file)
-    fileMenu.add_command(label="Save File",command=save_file)
+    fileMenu.add_command(label="Open",command=open_file)
+    fileMenu.add_command(label="Save",command=save_file)
+    fileMenu.add_command(label="Save As",command=save_as_file)
     fileMenu.add_separator()
     fileMenu.add_command(label="Exit")
 
