@@ -2,8 +2,8 @@ from tkinter import *
 from tkinter import filedialog
 import config
 
-
 def open_file():
+    global file_path
     file_path = filedialog.askopenfile()
     config.main_window.title(file_path.name)
     with open(file_path.name) as file:
@@ -11,6 +11,12 @@ def open_file():
         editor.insert(1.0,content)
         file.close()
         
+def save_file():
+    with open(file_path.name,'w') as file:
+        content = editor.get(1.0,END)
+        file.write(content)
+        file.close()
+
 
 
 def menu_bar(window):
@@ -20,7 +26,7 @@ def menu_bar(window):
     fileMenu = Menu(menubar,tearoff=0)
     menubar.add_cascade(label="File",menu=fileMenu)
     fileMenu.add_command(label="Open File",command=open_file)
-    fileMenu.add_command(label="Save File")
+    fileMenu.add_command(label="Save File",command=save_file)
     fileMenu.add_separator()
     fileMenu.add_command(label="Exit")
 
