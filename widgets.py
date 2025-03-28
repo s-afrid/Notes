@@ -38,7 +38,7 @@ def menu_bar(window):
     fileMenu.add_command(label="Save",command=save_file)
     fileMenu.add_command(label="Save As",command=save_as_file)
     fileMenu.add_separator()
-    fileMenu.add_command(label="Exit")
+    fileMenu.add_command(label="Exit",command=lambda : config.main_window.destroy())
 
 
 def set_widgets(window):
