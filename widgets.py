@@ -31,9 +31,11 @@ def save_as_file():
         config.main_window.title(config.file_path.name)
 
 def new_file():
-    editor.delete(1.0,END)
-    config.main_window.title("Notes")
-    file_path = None
+    if config.file_path != None:
+        config.file_path.close()
+        editor.delete(1.0,END)
+        config.main_window.title("Notes")
+        config.file_path = None
 
 
 def menu_bar(window):
@@ -46,6 +48,7 @@ def menu_bar(window):
     fileMenu.add_command(label="Open",command=open_file)
     fileMenu.add_command(label="Save",command=save_file)
     fileMenu.add_command(label="Save As",command=save_as_file)
+    fileMenu.add_command(label="Close",command=lambda : new_file())
     fileMenu.add_separator()
     fileMenu.add_command(label="Exit",command=lambda : config.main_window.destroy())
     #Edit Menu
