@@ -37,7 +37,13 @@ def new_file():
         config.editor.delete(1.0,END)
         config.main_window.title("Notes")
         config.file_path = None
-
+    
+def undo():
+    config.redo.append(config.editor.get("end-2c"))
+    config.editor.delete("end-2c")  
+def redo():
+    config.editor.insert(END,config.redo.pop())
+    
 
 def menu_bar(window):
     menubar = Menu(window)
@@ -56,9 +62,11 @@ def menu_bar(window):
     editMenu = Menu(menubar,tearoff=0)
     menubar.add_cascade(label="Edit",menu=editMenu)
     editMenu.add_command(label="Undo",accelerator="Ctrl+Z",
-                         command=lambda:config.editor.delete("end-2c"))
-    editMenu.add_command(label="Copy")
-    editMenu.add_command(label="Paste")
+                         command=undo)
+    editMenu.add_command(label="Redo",accelerator="Ctrl+Y",
+                        command=redo)
+    editMenu.add_command(label="Copy",accelerator="Ctrl+C")
+    editMenu.add_command(label="Paste",accelerator="Ctrl+V")
 
 
 def set_widgets(window):

@@ -8,5 +8,5 @@ def bind_keys(window):
     window.bind("<Control-Shift-S>", lambda event: save_as_file())
     window.bind("<Control-q>", lambda event: config.main_window.destroy())
     window.bind("<Control-Shift-C>",lambda event: new_file())
-    window.bind("<Control-z>",
-                lambda event : config.editor.delete("end-2c"))
+    window.bind("<Control-z>",lambda event : undo())
+    window.bind("<Control-y>",lambda event : redo())
