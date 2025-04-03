@@ -1,15 +1,16 @@
 from tkinter import *
 from tkinter import filedialog
+import pyperclip
 import config
 
+#File functions
 def open_file():   
     config.file_path = filedialog.askopenfile()
     config.main_window.title(config.file_path.name)
     with open(config.file_path.name) as file:
         content = file.read()
         config.editor.insert(1.0,content)
-        file.close()
-        
+        file.close()       
 def save_file():
     if config.file_path != None:
         config.main_window.title(config.file_path.name)
@@ -19,31 +20,39 @@ def save_file():
             file.close()
     else:
         save_as_file()
-
 def save_as_file():
     config.file_path = filedialog.asksaveasfile(defaultextension=".txt",
                                                 filetypes=[('Text',".txt"),('All Files',".*")])
-    filetext = config.editor.get(1.0,END)
-    config.file_path.write(filetext)
-    config.file_path.close()
+
     if config.file_path is None:
         return
     else:
         config.main_window.title(config.file_path.name)
-
+        filetext = config.editor.get(1.0,END)
+        config.file_path.write(filetext)
+        config.file_path.close()
 def new_file():
     if config.file_path != None:
         config.file_path.close()
         config.editor.delete(1.0,END)
         config.main_window.title("Notes")
         config.file_path = None
-    
+# Undo/Redo function    
 def undo():
     config.redo.append(config.editor.get("end-2c"))
     config.editor.delete("end-2c")  
 def redo():
     config.editor.insert(END,config.redo.pop())
-    
+# Copy/Paste function
+def paste():
+    clipboard_text = pyperclip.paste()
+    config.editor.insert("end",clipboard_text)
+def copy():
+    if config.editor.tag_ranges(SEL):
+        selected_text = config.editor.get(SEL_FIRST, SEL_LAST)
+        pyperclip.copy(selected_text)
+    else:
+        pyperclip.copy(config.editor.get(1.0,END))
 
 def menu_bar(window):
     menubar = Menu(window)
@@ -63,10 +72,12 @@ def menu_bar(window):
     menubar.add_cascade(label="Edit",menu=editMenu)
     editMenu.add_command(label="Undo",accelerator="Ctrl+Z",
                          command=undo)
-    editMenu.add_command(label="Redo",accelerator="Ctrl+Y",
+    editMenu.add_command(label="Redo",accelerator="Ctrl+A",
                         command=redo)
-    editMenu.add_command(label="Copy",accelerator="Ctrl+C")
-    editMenu.add_command(label="Paste",accelerator="Ctrl+V")
+    editMenu.add_command(label="Copy",accelerator="Ctrl+C",
+                         command=copy)
+    editMenu.add_command(label="Paste",accelerator="Ctrl+V",
+                        command=paste)
 
 
 def set_widgets(window):

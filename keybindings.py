@@ -9,4 +9,6 @@ def bind_keys(window):
     window.bind("<Control-q>", lambda event: config.main_window.destroy())
     window.bind("<Control-Shift-C>",lambda event: new_file())
     window.bind("<Control-z>",lambda event : undo())
-    window.bind("<Control-y>",lambda event : redo())
+    window.bind("<Control-a>",lambda event : redo())
+    window.bind("<Control-v>",lambda event : paste())
+    window.bind("<Control-c>",lambda event : copy())
