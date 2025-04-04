@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import colorchooser
 import pyperclip
 import config
 
@@ -54,6 +55,12 @@ def copy():
     else:
         pyperclip.copy(config.editor.get(1.0,END))
 
+# Font functions
+def font_color():
+    color = colorchooser.askcolor()
+    colorhex = color[1]
+    config.editor.config(fg=colorhex)
+
 def menu_bar(window):
     menubar = Menu(window)
     window.config(menu=menubar)
@@ -78,6 +85,9 @@ def menu_bar(window):
                          command=copy)
     editMenu.add_command(label="Paste",accelerator="Ctrl+V",
                         command=paste)
+    editMenu.add_separator()
+    editMenu.add_command(label="Font Color",command=font_color)
+    
 
 
 def set_widgets(window):
